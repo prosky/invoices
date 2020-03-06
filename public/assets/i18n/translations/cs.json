@@ -1,0 +1,53 @@
+{
+  "nav": {
+    "invoice": "Faktura",
+    "home": "Domů"
+  },
+  "invoice": {
+    "header": {
+      "title": "Faktura"
+    },
+    "number": "Číslo faktury",
+    "maturity": "Splatnost",
+    "date": "Datum vystavení",
+    "type": "Typ",
+    "type_values": {
+      "vat": "Plátce DPH",
+      "non_vat": "Neplátce DPH"
+    },
+    "vat": "Zadávání cen",
+    "vat_values": {
+      "with": "S DPH",
+      "without": "Bez DPH"
+    },
+    "id": "IČO",
+    "fid": "DIČ",
+    "company": "Firma/Jméno",
+    "city": "Město",
+    "street": "Ulice, č.p.",
+    "zip": "PSČ",
+    "country": "Země",
+    "mobile": "Mobile",
+    "fax": "Fax",
+    "email": "E-mail",
+    "account_number": "Číslo účtu/Kód banky",
+    "variable_symbol": "Variabilní symbol",
+    "constant_symbol": "Konstantní symbol",
+    "payment_method": "Platební metoda",
+    "payment_method_values": {
+      "cash": "Hotově",
+      "bank": "Bankovní převod",
+      "credit": "Kreditní karta",
+      "office": "Dobírka"
+    },
+    "currency": "Měna",
+    "currency_values": {
+      "czk": "Česká koruna (Kč)",
+      "eur": "Euro (€)"
+    }
+  },
+  "messages": {
+    "success": "OK",
+    "fill": "Pole {{field}} musí být vyplněno"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "nav.home": "Home",
+  "nav.invoice": "Invoice",
+
+  "invoice.company": "Company/Name",
+  "invoice.street": "Street, number",
+  "invoice.zip": "ZIP",
+  "messages.success": "OK",
+  "messages.fill": "Field {{field}} must be filled"
+}
