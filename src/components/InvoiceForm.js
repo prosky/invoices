@@ -1,10 +1,8 @@
 import React from 'react';
 import {withTranslation} from 'react-i18next';
-import InputFactory from "../forms/InputFactory";
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {Button, Container, Grid,} from "@material-ui/core";
-import {MuiPickersUtilsProvider} from '@material-ui/pickers';
+import inputFactory from "../forms/InputFactory";
+import {Container, Grid,} from "@material-ui/core";
+import ItemList from "../components/ItemList";
 
 const getInputs = (values) => {
   const vat = values.invoice.type === 'vat';
@@ -81,6 +79,8 @@ const getInputs = (values) => {
 
 class InvoiceForm extends React.Component {
 
+  values = {};
+
   defaultValues = {
     invoice: {
       type: 'non_vat',
@@ -93,68 +93,60 @@ class InvoiceForm extends React.Component {
       vat: 'without',
       currency: 'czk'
     },
+    items: {}
   };
 
   constructor(props) {
     super(props);
     this.state = {
       validated: false,
-      ...this.defaultValues
     };
+    Object.assign(this.values, this.defaultValues, props.values);
   }
 
-
-  handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() !== false) {
-      console.log(this.state.values);
-      this.setState({validated: true});
-    } else {
-      console.log('invalid', this.state.values);
-    }
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
   handleChange = (value) => {
-    console.log(value);
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.setState(value);
-    }, 500);
+    Object.assign(this.values, value);
+    this.props.onChange(this.values);
   };
+
+  handleChangeItems = (value) => {
+    Object.assign(this.values, value);
+    this.props.onChange(this.values);
+  };
+
 
   render() {
     //console.log(getInputs(this.values));
     const {t} = this.props;
     return (
-      <Container>
+      <Container maxWidth={false}>
         <header className="py-5">
           <h1>{t('invoice.header.title')}</h1>
         </header>
         <div className="InvoiceForm">
-          <form noValidate onSubmit={this.handleSubmit}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid container spacing={2}>
-                {Object.entries(getInputs(this.state)).map(([section, inputs]) => (
-                  <Grid key={section} item xs={12} md={6}>
-                    {inputs.map(([name, type, attrs, values]) => (
-                      InputFactory.create(type,
-                        {
-                          handleChange: this.handleChange,
-                          section: section,
-                          id: `invoice-form-${section}-${name}`,
-                          name,
-                          label: t(`invoice.${name}`),
-                          attrs: {...attrs, value: this.state[section]?.[name]},
-                          values: values && values.map((value) => [value, t(`invoice.${name}_values.${value}`)])
-                        })
-                    ))}
-                  </Grid>))}
-              </Grid>
-
-            </MuiPickersUtilsProvider>
-          </form>
+          <Grid container spacing={2}>
+            <Grid container item spacing={2} xs={12} md={6}>
+              {Object.entries(getInputs(this.values)).map(([section, inputs]) => (
+                <Grid key={section} item xs={12} md={6}>
+                  {inputs.map(([name, type, attrs, values]) => (
+                    inputFactory.create(type,
+                      {
+                        handleChange: this.handleChange,
+                        section: section,
+                        id: `invoice-form-${section}-${name}`,
+                        name,
+                        label: t(`invoice.${name}`),
+                        attrs: {...attrs, value: this.values[section]?.[name]},
+                        values: values && values.map((value) => [value, t(`invoice.${name}_values.${value}`)])
+                      })
+                  ))}
+                </Grid>))}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <h2>{t(`items.header`)}</h2>
+              <ItemList values={this.values} items={this.values.items} onChange={this.handleChangeItems}/>
+            </Grid>
+          </Grid>
         </div>
       </Container>
     )

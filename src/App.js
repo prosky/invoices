@@ -1,20 +1,22 @@
+import './i18n';
 import React, {Suspense} from 'react';
-import InvoiceForm from './pages/InvoiceForm';
 import Home from './pages/Home';
 import logo from './logo.svg';
 import LanguageSelector from "./components/LanguageSelector";
-import './i18n';
 import {useTranslation} from 'react-i18next';
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import {AppBar, Button, Toolbar, useMediaQuery} from "@material-ui/core";
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Invoice from "./pages/Invoice";
+import NotFound from "./pages/NotFound";
+
 
 function Navigation() {
   const {t} = useTranslation();
   return [
-    <Button key="home" href="/">{t('nav.home')}</Button>,
-    <Button key="invoice" href="/invoice">{t('nav.invoice')}</Button>
+    <Button key="home" component={Link} to="/">{t('nav.home')}</Button>,
+    <Button key="invoice" component={Link} to="/invoice">{t('nav.invoice')}</Button>
   ];
 }
 
@@ -39,6 +41,13 @@ function App() {
             background: {
               default: "#1d2026"
             },
+          },
+          overrides: {
+            MuiTableCell: {
+              root: {
+                padding: 2,
+              },
+            }
           }
         }) :
         createMuiTheme({
@@ -51,6 +60,13 @@ function App() {
               default: "#ccc"
             },
           },
+          overrides: {
+            MuiTableCell: {
+              root: {
+                padding: 2,
+              },
+            }
+          }
         })
     ,
     [prefersDarkMode],
@@ -71,12 +87,9 @@ function App() {
               </Toolbar>
             </AppBar>
             <Switch>
-              <Route path="/invoice">
-                <InvoiceForm/>
-              </Route>
-              <Route path="/">
-                <Home/>
-              </Route>
+              <Route exact path="/" component={Home}/>
+              <Route path="/invoice/:id?" component={Invoice}/>
+              <Route path="*" component={NotFound}/>
             </Switch>
           </BrowserRouter>
         </div>

@@ -1,10 +1,70 @@
 {
-  "nav.home": "Home",
-  "nav.invoice": "Invoice",
-
-  "invoice.company": "Company/Name",
-  "invoice.street": "Street, number",
-  "invoice.zip": "ZIP",
-  "messages.success": "OK",
-  "messages.fill": "Field {{field}} must be filled"
+  "nav": {
+    "invoice": "Invoice",
+    "home": "home"
+  },
+  "invoice": {
+    "header": {
+      "title": "Invoice"
+    },
+    "number": "Invoice number",
+    "maturity": "Maturity",
+    "date": "Date of issue",
+    "type": "",
+    "type_values": {
+      "vat": "VAT payer",
+      "non_vat": "Non-VAT payer"
+    },
+    "vat": "Bidding",
+    "vat_values": {
+      "with": "Incl. VAT",
+      "without": "Without VAT"
+    },
+    "in": "IN",
+    "tin": "TIN",
+    "company": "Company / Name",
+    "city": "City",
+    "street": "Street",
+    "zip": "ZIP code",
+    "country": "Země",
+    "mobile": "Mobile",
+    "fax": "Fax",
+    "email": "Email",
+    "account_number": "Account number / Bank code",
+    "variable_symbol": "Variable symbol",
+    "constant_symbol": "constant_symbol",
+    "payment_method": "Payment Method",
+    "payment_method_values": {
+      "cash": "Cash",
+      "bank": "Bank transfer",
+      "credit": "Credit card",
+      "office": "Cash on delivery"
+    },
+    "currency": "Currency",
+    "currency_values": {
+      "czk": "Czech crown (CZK)",
+      "euros": "Euro (€)"
+    }
+  },
+  "messages": {
+    "success": "OK",
+    "fill": "Field {{field}} must be filled"
+  },
+  "items": {
+    "header": "Items",
+    "description": "Description",
+    "count": "Count",
+    "unit": "Unit",
+    "price": "Price",
+    "price_vat": "Price with VAT",
+    "price_sum": "Total",
+    "vat": "Rate",
+    "add": "Add"
+  },
+  "summary": {
+    "sum": "Total without VAT",
+    "vat": "VAT",
+    "sum_vat": "Total with VAT"
+  },
+  "delete": "delete"
 }

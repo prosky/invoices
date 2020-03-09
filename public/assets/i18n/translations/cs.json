@@ -49,5 +49,22 @@
   "messages": {
     "success": "OK",
     "fill": "Pole {{field}} musí být vyplněno"
-  }
+  },
+  "items": {
+    "header": "Položky",
+    "description": "Popis",
+    "count": "Počet",
+    "unit": "Jednotka",
+    "price": "Cena",
+    "price_vat": "Cena s DPH",
+    "price_sum": "Celkem",
+    "vat": "Sazba",
+    "add": "Přidat"
+  },
+  "summary": {
+    "sum": "Celkem bez DPH",
+    "vat": "DPH",
+    "sum_vat": "Celkem s DPH"
+  },
+  "delete": "Odstranit"
 }

@@ -1,3 +1,5 @@
+
+import 'date-fns';
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
@@ -8,18 +10,33 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Radio from '@material-ui/core/Radio';
-import {KeyboardDatePicker} from "@material-ui/pickers";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import FormLabel from "@material-ui/core/FormLabel";
 import Chip from '@material-ui/core/Chip';
+import DateFnsUtils from '@date-io/date-fns';
+
+const DatePicker = (params) => {
+  const [selectedDate, setSelectedDate] = React.useState(params.value);
+  const handleChange = (date) => {
+    setSelectedDate(date);
+    params.onChange(date);
+  };
+  return (<MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <KeyboardDatePicker {...params}  value={selectedDate} onChange={handleChange}/>
+  </MuiPickersUtilsProvider>);
+};
 
 class InputFactory {
 
-  static definitions = {
+  definitions = {
     text: {
       Component: TextField
     },
     number: {
       Component: TextField
+    },
+    checkbox: {
+      Component: Checkbox
     },
     select: {
       Label: InputLabel,
@@ -35,9 +52,6 @@ class InputFactory {
         return entries.map(([value, label]) => (<Chip key={`${key}-${value}`} value={value} label={label}/>));
       }
     },
-    checkbox: {
-      Component: Checkbox
-    },
     radio: {
       Label: FormLabel,
       Component: RadioGroup,
@@ -47,22 +61,32 @@ class InputFactory {
       }
     },
     date: {
-      Component: KeyboardDatePicker,
+      Component: DatePicker,
       update(options) {
         let original = options.handleChange;
         options.handleChange = (date) => {
           return original({[options.section]: {[options.name]: date}});
-        }
+        };
+        return options;
       }
     }
   };
 
-  static update(options) {
-    let original = options.handleChange;
-    options.handleChange = (event) => {
-      let {value} = event.target;
-      return original({[options.section]: {[options.name]: value}});
-    };
+  defaults = {
+    update(options) {
+      let original = options.handleChange;
+      options.handleChange = (event) => {
+        let {value} = event.target;
+        return original({[options.section]: {[options.name]: value}});
+      };
+      return options;
+    },
+  };
+
+  constructor() {
+    for (const key in this.definitions) {
+      this.definitions[key] = Object.assign({}, this.defaults, this.definitions[key]);
+    }
   }
 
   /**
@@ -71,10 +95,9 @@ class InputFactory {
    * @param {object} options
    * @returns {FormControl}
    */
-  static create(type, options) {
-    const {Label, Component, makeChild, update} = InputFactory.definitions[type];
-    (update || InputFactory.update)(options);
-    const {handleChange, id, name, label, attrs, values} = options;
+  create(type, options) {
+    const {Label, Component, makeChild, update} = this.definitions[type];
+    const {handleChange, id, name, label, attrs, values} = update(options);
     return (<FormControl key={id} fullWidth={true}>
       {label && Label && <Label>{label}</Label>}
       <Component onChange={handleChange} id={id} label={label} name={name} {...attrs}>
@@ -84,4 +107,4 @@ class InputFactory {
   }
 }
 
-export default InputFactory;
+export default new InputFactory();
